@@ -14,10 +14,11 @@
 
 Para montarlo simplemente instalamos el paquete CVS en el servidor. Para ello, ejecutamos el siguiente comando:
 
-```console
+```bash
 sudo apt install cvs
 ```
 
+## 2 & 3. Crear un repositorio cvs y darle contenido
 
 Vamos a instalarlo sobre la máquina directamente. Para ello, seguimos los pasos explicados en el siguiente enlace: [https://www.linuxfromscratch.org/blfs/view/5.1/server/cvsserver.html](https://www.linuxfromscratch.org/blfs/view/5.1/server/cvsserver.html)
 
@@ -30,13 +31,17 @@ export CVSROOT=/home/USUARIO/cvsroot &&
 cvs init
 ```
 
-2. Importar contenido al repositorio
+2. Importar contenido al repositorio 
 
 ```bash
 export CVSROOT=/home/USUARIO/cvsroot &&
 cd [directorio del proyecto] &&
-cvs import -m "Commit inicial" [nombre del proyecto] [nombre del vendedor] [nombre de la rama]
+cvs import -m "Commit inicial" [nombre del módulo] [nombre del vendedor] [nombre de la rama]
+cvs checkout [nombre del módulo]
+cd [nombre del módulo]
 ```
+
+tras eso, se habrá creado un directorio con el nombre [nombre del módulo] Es en este directorio donde se encuentra el contenido del módulo, y donde se realizarán los commits.
 
 3. verificar el acceso a los repositorios locales
 
@@ -63,9 +68,22 @@ U cvstest/CVSROOT/taginfo
 U cvstest/CVSROOT/verifymsg
 ```
 
-4. Verificar el acceso al repositorio remoto
+# 4 & 5. Investigar como funciona la herramienta cvs-fast-export e instalarla
+
+**cvs-fast-export**,  [https://gitlab.com/esr/cvs-fast-export](https://gitlab.com/esr/cvs-fast-export) es una herramienta que analiza una colección de ficheros RCS en un repositorio CVS y, si es posible, devuelve un histórico equivalente en el formato de un flujo fast-import. 
+
+Para utilizarlo, se siguen los siguientes pasos:
+
+1. Instalar cvs-fast-export
 
 ```bash
-export CVS_RSH=/usr/bin/ssh &&
-cvs -d:ext:localhost:/var/cvsroot co cvstest
+git clone https://gitlab.com/esr/cvs-fast-export
+cd cvs-fast-export
+sudo install cvs-fast-export /usr/local/bin/cvs-fast-export
+```
+
+2. Ejecutar cvs-fast-export: Nos posicionamos en el CVSROOT, y ejecutamos el siguiente comando:
+
+```bash
+find . | cvs-fast-export > stream.fi 
 ```
