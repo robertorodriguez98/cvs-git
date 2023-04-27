@@ -5,7 +5,7 @@
 3. Darle contenido ha dicho repositorio (se recomiendan hacer commits)
 4. Investigar como funciona la herramienta cvs-fast-export
 5. Instalarse cvs-fast-export (no vale con apt install pues la versión de los repositorios es antigua. Se recomienda descargarse el codigo del repositorio oficial y compilarlo)
-6. Instalar gitlab en docker (edicio ce). Se recomienda usar docker-compose.
+6. Instalar gitlab en docker (edición ce). Se recomienda usar docker-compose.
 7. Migrar el repositorio de cvs a git
 8. Automatizar el séptimo paso con un script de python. Al lanzar este script se debe crear un repositorio en el gitlab y subir el repositorio migrado. Los parámetros de este script pueden ser los que queráis.
 9. Documentación del proceso.
@@ -87,3 +87,30 @@ sudo install cvs-fast-export /usr/local/bin/cvs-fast-export
 ```bash
 find . | cvs-fast-export > stream.fi 
 ```
+
+## 6. Instalar gitlab en docker
+
+Sigo los siguientes pasos:
+
+1. Instalar docker y docker-compose
+
+```bash
+sudo apt install docker.io docker-compose
+```
+
+2. Ejecuto docker-compose utilizando el siguiente archivo [docker-compose.yaml](docker-compose.yaml)
+
+```bash
+docker-compose up -d
+```
+
+3. Tras unos minutos, obtengo la contraseña de la siguiente manera (el usuario es root):
+
+```bash
+sudo docker exec -it gitlab-ce sh
+cat /etc/gitlab/initial_root_password
+```
+
+4. Accedo a la interfaz web de gitlab en la dirección [http://localhost:8080](http://localhost:8080) y cambio la contraseña.
+
+![gitlab1](images/gitlab1.png)
