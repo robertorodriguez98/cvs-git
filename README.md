@@ -88,6 +88,13 @@ sudo install cvs-fast-export /usr/local/bin/cvs-fast-export
 find . | cvs-fast-export > stream.fi 
 ```
 
+---
+
+```bash
+sudo apt install git-cvs
+git cvsimport -C repositorios -r cvs -k -vA authors-file.txt -d $CVSROOT repocvs
+```
+
 ## 6. Instalar gitlab en docker
 
 Sigo los siguientes pasos:
@@ -128,3 +135,10 @@ git push -u origin --tags
 Se especifica el puerto 8022 porque en la configuración de gitlab, he puesto ese puerto para ssh, ya que en la máquina anfitriona ya se encontraba en uso el puerto.
 
 ## 8. Automatizar el séptimo paso con un script de python
+El fichero authors-file.txt contiene la equivalencia entre los usuarios del sistema autores de los commits en CVS y los nombres / correos en git. El formato es el siguiente:
+
+```bash
+usuariosistema=Nombre Apellido <correo>
+usuariosistema2=Nombre Apellido <correo>
+```
+
