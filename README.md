@@ -107,10 +107,24 @@ docker-compose up -d
 3. Tras unos minutos, obtengo la contraseña de la siguiente manera (el usuario es root):
 
 ```bash
-sudo docker exec -it gitlab-ce sh
-cat /etc/gitlab/initial_root_password
+sudo docker exec -it gitlab-ce cat /etc/gitlab/initial_root_password
 ```
 
-4. Accedo a la interfaz web de gitlab en la dirección [http://localhost:8080](http://localhost:8080) y cambio la contraseña.
-
+4. Accedo a la interfaz web de gitlab en la dirección [http://localhost:8080](http://localhost:8080) con las credenciales obtenidas y, creo un nuevo usuario.
 ![gitlab1](images/gitlab1.png)
+
+
+## 7. Migrar el repositorio de cvs a git
+
+1. Al usuario previamente creado, le creo un token de acceso en la sección de configuración de la cuenta, o en mi caso, le añado la clave ssh pública de la máquina con el repositorio CVS.
+2. Creo un nuevo repositorio vacío, con visibilidad pública o privada, sin README.
+3. añado el repositorio remoto a mi repositorio local de git, y hago un push de todo el contenido usando los siguientes comandos (en la carpeta del repositorio)
+```bash
+git remote rename origin old-origin
+git remote add origin ssh://git@localhost:8022/[USUARIO]/[REPOSITORIO].git
+git push -u origin --all
+git push -u origin --tags
+```
+Se especifica el puerto 8022 porque en la configuración de gitlab, he puesto ese puerto para ssh, ya que en la máquina anfitriona ya se encontraba en uso el puerto.
+
+## 8. Automatizar el séptimo paso con un script de python

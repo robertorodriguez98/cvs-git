@@ -12,6 +12,7 @@ services:
     ports:
       - '8080:80'
       - '8443:443'
+      - '8022:22'
     volumes:
       - '$GITLAB_HOME/config:/etc/gitlab'
       - '$GITLAB_HOME/logs:/var/log/gitlab'
