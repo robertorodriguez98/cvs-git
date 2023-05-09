@@ -38,15 +38,10 @@ print(style.RESET)
 repo = input ('Introduce el nombre del repositorio de CVS: ')
 usuarioGitlab = input ('Introduce el usuario de gitlab: ')
 repogit = repo + '_git'
-
-## Crear repositorio
-print(style.GREEN)
-print(lineas)
-print("Creando repositorio de git")
-print(lineas)
 print(style.RESET)
-os.system('git cvsimport -C ' + repogit + ' -r cvs -k -a -A authors-file.txt -d $CVSROOT ' + repo + ' 2>&1')
+os.system('git cvsimport -C ' + repogit + ' -r cvs -k -a -A authors-file.txt -d $CVSROOT ' + repo)
 os.chdir(repogit)
+print (style.BLUE + "-- REPOSITORIO CREADO CON ÉXITO --" + style.RESET)
 
 ##subiendo repositorio
 print(style.GREEN)
@@ -54,6 +49,8 @@ print(lineas)
 print("Subiendo repositorio a gitlab")
 print(lineas)
 print(style.RESET)
+os.system('git branch -m main')
 os.system('git remote add origin ssh://git@localhost:8022/' + usuarioGitlab + '/' + repo + '.git')
-os.system('git push -u origin --all && git push -u origin --tags && echo "Repositorio subido con exito"')
+os.system('git push -u origin --all && git push -u origin --tags')
+print (style.BLUE + "-- REPOSITORIO SUBIDO CON ÉXITO --" + style.RESET)
 
