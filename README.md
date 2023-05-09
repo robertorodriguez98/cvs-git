@@ -1,4 +1,6 @@
-# cvs-git
+# Migración de CVS a Git
+
+## Tareas
 
 1. Montar un servidor cvs (se puede usar docker)
 2. Investigar como crear un repositorio cvs, tras ello crearlo
@@ -68,6 +70,8 @@ U cvstest/CVSROOT/taginfo
 U cvstest/CVSROOT/verifymsg
 ```
 
+Finalmente, para facilitar la creación de repositorios para probar la exportación, he creado el siguiente script: [modulos-cvs.sh](modulos-cvs.sh)
+
 # 4 & 5. Investigar como funciona la herramienta cvs-fast-export e instalarla
 
 **cvs-fast-export**,  [https://gitlab.com/esr/cvs-fast-export](https://gitlab.com/esr/cvs-fast-export) es una herramienta que analiza una colección de ficheros RCS en un repositorio CVS y, si es posible, devuelve un histórico equivalente en el formato de un flujo fast-import. 
@@ -124,7 +128,7 @@ sudo docker exec -it gitlab-ce cat /etc/gitlab/initial_root_password
 ## 7. Migrar el repositorio de cvs a git
 
 1. Al usuario previamente creado, le creo un token de acceso en la sección de configuración de la cuenta, o en mi caso, le añado la clave ssh pública de la máquina con el repositorio CVS.
-2. Creo un nuevo repositorio vacío, con visibilidad pública o privada, sin README.
+2. Creo un nuevo repositorio vacío, con visibilidad pública o privada, sin README, si quiero elegir la visibilidad. Si no, paso al siguiente punto.
 3. añado el repositorio remoto a mi repositorio local de git, y hago un push de todo el contenido usando los siguientes comandos (en la carpeta del repositorio)
 ```bash
 git remote rename origin old-origin
@@ -135,10 +139,7 @@ git push -u origin --tags
 Se especifica el puerto 8022 porque en la configuración de gitlab, he puesto ese puerto para ssh, ya que en la máquina anfitriona ya se encontraba en uso el puerto.
 
 ## 8. Automatizar el séptimo paso con un script de python
-El fichero authors-file.txt contiene la equivalencia entre los usuarios del sistema autores de los commits en CVS y los nombres / correos en git. El formato es el siguiente:
 
-```bash
-usuariosistema=Nombre Apellido <correo>
-usuariosistema2=Nombre Apellido <correo>
-```
+Ejecuto el siguiente script de python: [script.py](script.py)
 
+Donde los pasos son guiados por el script, y se piden los datos necesarios para la migración.
